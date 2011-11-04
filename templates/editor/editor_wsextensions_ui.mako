@@ -13,7 +13,7 @@
                 <div class="form-row">
                     
                     ## Predecessor
-                    <label>Predecessor:</label>
+                    <label>Previous Step:</label>
                     <ul id="suggestionEnginePredecessorListItems" style="display:none;"></ul>
                     <select id="suggestionEnginePredecessorList" type="text" name="predecessor" />
                     </select>
@@ -21,7 +21,7 @@
                     <br /> 
 
                     ## Successor
-                    <label>Successor:</label>
+                    <label>Next Step:</label>
                     <select id ="suggestionEngineSuccessorList" type="text" name="successor" />
                     </select>
                     <div class="toolParamHelp">The tool or operation that the suggestion engine needs to feed into.</div>
