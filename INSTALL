@@ -5,4 +5,35 @@ Web Service Extensions for the Galaxy Workflow Editor
 @author Michael Cotterell <mepcotterell@gmail.com>
 @see    LICENSE (MIT style license file).
 
-@todo   Write some installation instructions.
+1. Merge the templates directory into your galaxy distribution.
+
+2. Make the following chages to your templates/workflow/editor.mako file:
+
+   a. Find:
+
+        // jQuery onReady
+        $( function() {
+
+      and replace with:
+
+        // jQuery onReady
+        $( function() {
+
+	    ## Include Galaxy Web Service Extensions Logic File.
+            <%include file="editor_wsextensions.mako"/>
+
+   b. Find:
+
+        ## Div where tool details are loaded and modified.
+        <div id="right-content" class="right-content"></div>
+
+      and replace with:
+
+        ## Include the Galaxy Web Service Extensions UI file.
+        <%include file="editor_wsextensions_ui.mako"/>
+
+        ## Div where tool details are loaded and modified.
+        <div id="right-content" class="right-content"></div>
+
+   c. That's it!
+
