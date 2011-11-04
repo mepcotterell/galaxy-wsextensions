@@ -55,7 +55,7 @@ function wsextensions_show_about() {
     msg += "<br />";
     msg += 'Web Service Extensions for Galaxy are based on software from the'  + "<br />";
     msg += 'University of Georgia Web Services Annotations Group, which has' + "<br />";
-    msg += 'been licensed under the [insert license information here].' + "<br />";
+    msg += 'been licensed under a MIT style license.' + "<br />";
     msg += "<br />";
     msg += 'For more information, please visit ' + "<br />";
     msg += '<a href="http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/">http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/</a>.' + "<br />";
