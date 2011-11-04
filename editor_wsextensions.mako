@@ -1,8 +1,10 @@
 
 ## Web Service Extensions for the Galaxy Workflow Editor
 ## @author Michael Cotterell <mepcotterell@gmail.com>
-##
+## @see    LICENSE (MIT style license file).
+## 
 ## NOTE: This file is included in editor.mako via a mako include.
+##       Please see the INSTALL file for installation instructions.
 
 ## The product version
 WSEXTENSIONS_VERSIONS = "1.2";

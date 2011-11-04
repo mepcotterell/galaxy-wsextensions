@@ -1,3 +1,10 @@
+## Web Service Extensions for the Galaxy Workflow Editor
+## @author Michael Cotterell <mepcotterell@gmail.com>
+## @see    LICENSE (MIT style license file).
+## 
+## NOTE: This file is included in editor.mako via a mako include.
+##       Please see the INSTALL file for installation instructions.
+
 ## Div for suggestion engine.
 ## @author mepcotterell
         <div id="suggestion-engine" class="metadataForm right-content" style="display:none;">
