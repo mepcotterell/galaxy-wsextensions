@@ -54,10 +54,103 @@ fi
 echo ""
 echo ""
 echo "Installing system-wide prerquisites..."
+echo "sudo apt-get install build-essential python2.7 python2.7-dev"
+echo ""
 sudo apt-get install build-essential python2.7 python2.7-dev
 
 echo ""
-echo "NOTE: The rest of the installation process will occur locally. No more"
-echo "      changes will be made system-wide."
+echo "NOTE:      The rest of the installation process will occur locally. No "
+echo "           more changes will be made system-wide."
+
+# Temporary variables and environment variables
+CWD=$(pwd)        # current working dir
+ENV="$CWD"/env    # dir for the virtual environment installation
+TMP="$CWD"/temp   # temp dir
+JDK="$CWD"/jdk    # dir for the oracle jdk installation
+GAL="$CWD"/galaxy # dir for the galaxy installation
+
+# Create the directories if they don't already exist
+mkdir -p "$ENV"
+mkdir -p "$TMP"
+mkdir -p "$JDK"
+mkdir -p "$GAL"
+
+# The python executable
+PYTHON="$(which python2.7)"
+
+# Determine whether the system is 32 or 64 bit
+MODEL=$(uname -m)
+
 echo ""
+echo "Downloading the prerequisites..."
+
+# Download the python virtualenv script
+echo ""
+echo "Downloading the Virtual Python Environment builder"
+wget -P "$TMP" https://raw.github.com/pypa/virtualenv/master/virtualenv.py
+
+# Download the appropriate jdk
+echo "Downloading the Java Development Kit"
+if [ "$MODEL" == "x86_64" ]
+then 
+    echo "64bit JDK"
+    wget -O "$TMP"/jdk.tar.gz -P "$TMP" http://download.oracle.com/otn-pub/java/jdk/7u3-b04/jdk-7u3-linux-x64.tar.gz
+else
+    echo "32bit JDK"
+    wget -O "$TMP"/jdk.tar.gz -P "$TMP" http://download.oracle.com/otn-pub/java/jdk/7u3-b04/jdk-7u3-linux-i586.tar.gz
+fi
+
+echo "Downloading JPype"
+wget -O "$TMP"/jpype.zip -P "$TMP" http://downloads.sourceforge.net/project/jpype/JPype/0.5.4/JPype-0.5.4.2.zip
+
+echo "Downloading Galaxy"
+wget -O "$TMP"/galaxy.tar.gz -P "$TMP" http://dist.g2.bx.psu.edu/galaxy-dist.tip.tar.gz
+
+# Go into the temp directory
+cd "$TMP"
+
+echo "Installing and activating the Virtual Python Environment"
+$PYTHON virtualenv.py "$ENV"
+
+# Update the path to the python executable
+PYTHON="$ENV"/bin/python
+
+# Activate the new environment
+. "$ENV"/bin/activate
+
+echo ""
+echo "Installing the JDK and setting up the environmental variables"
+tar zxf jdk.tar.gz
+mv jdk*/* "$JDK"
+export JAVA_HOME="$JDK"
+export PATH="$JDK"/bin:$PATH
+
+echo ""
+echo "Installing JPype"
+unzip jype.zip
+cd JPype-0.5.4.2
+$PYTHON setup.py install --prefix "$ENV"
+
+# Go into the temp directory
+cd "$TMP"
+
+echo ""
+echo "Installing Galaxy"
+tar zxf galaxy.tar.gz
+mv galaxy-dit/* "$GAL"
+
+echo ""
+echo "Patching Galaxy with Web Service Extensions"
+
+echo ""
+echo "Cleaning up..."
+
+# Clean up
+cd "$CWD"
+rm -rf "$TMP"
+
+echo ""
+echo "Done!"
+
+echo "You can start Galaxy using the following command: "
 
