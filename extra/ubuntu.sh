@@ -127,7 +127,7 @@ export PATH="$JDK"/bin:$PATH
 
 echo ""
 echo "Installing JPype"
-unzip jype.zip
+unzip jpype.zip
 cd JPype-0.5.4.2
 $PYTHON setup.py install --prefix "$ENV"
 
@@ -137,7 +137,7 @@ cd "$TMP"
 echo ""
 echo "Installing Galaxy"
 tar zxf galaxy.tar.gz
-mv galaxy-dit/* "$GAL"
+mv galaxy-dist/* "$GAL"
 
 echo ""
 echo "Patching Galaxy with Web Service Extensions"
@@ -150,7 +150,5 @@ cd "$CWD"
 rm -rf "$TMP"
 
 echo ""
-echo "Done!"
-
-echo "You can start Galaxy using the following command: "
+echo "Done! You can start Galaxy using the following command: "
 
