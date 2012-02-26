@@ -1,5 +1,5 @@
 Galaxy Install Scripts
 
 Ubuntu Linux
- > wget -qO- https://raw.github.com/mepcotterell/galaxy-wsextensions/master/extra/ubuntu.sh | sh
+ > wget -qO- https://raw.github.com/mepcotterell/galaxy-wsextensions/master/extra/ubuntu.sh | bash
 
