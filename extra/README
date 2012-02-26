@@ -23,8 +23,8 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Ubuntu Linux
- > mkdir galaxy
- > cd galaxy
- > wget -qO- https://raw.github.com/mepcotterell/galaxy-wsextensions/master/extra/ubuntu.sh | bash
+Ubuntu Linux (32 or 64 bit)
+ $ mkdir galaxy
+ $ cd galaxy
+ $ wget -qO- https://raw.github.com/mepcotterell/galaxy-wsextensions/master/extra/ubuntu.sh | bash
 
