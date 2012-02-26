@@ -31,8 +31,8 @@ echo "install the required prequisites. These prerequisites will be installed"
 echo "using the system's package manager and can be easily uninstalled at a "
 echo "later time"
 echo ""
-echo "WARNING: You will be required to enter your password during the"
-echo "         installation process."
+echo "WARNING:   You may be required to enter your password during the"
+echo "           installation process."
 echo ""
 echo "AGREEMENT: THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY "
 echo "           KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE "
@@ -52,12 +52,9 @@ then
 fi
 
 echo ""
-echo "Installing build tools..."
-sudo apt-get install build-essential
-
 echo ""
-echo "Installing Python..."
-sudo apt-get install python2.7 python2.7-dev
+echo "Installing system-wide prerquisites..."
+sudo apt-get install build-essential python2.7 python2.7-dev
 
 echo ""
 echo "NOTE: The rest of the installation process will occur locally. No more"
