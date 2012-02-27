@@ -1,4 +1,8 @@
 #!/bin/bash
+#
+# Galaxy Install Scripts
+#
+# NOTE: THESE SCRIPTS ARE NOT YET READY. USE AT YOUR OWN RISK
 # 
 # Copyright (c) 2012 Michael E. Cotterell <mepcotterell@gmail.com>
 #
@@ -91,9 +95,6 @@ PYTHON="$(which python2.7)"
 
 # Get the cpu model, 32 or 64 bit
 MODEL=$(uname -m)
-
-echo ""
-echo "Downloading the prerequisites..."
 
 # Download the python virtualenv script
 download "https://raw.github.com/pypa/virtualenv/master/virtualenv.py" $TMP "virtualenv.py" "Virtual Python Environment builder"
