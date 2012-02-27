@@ -22,7 +22,18 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
+
 clear
+
+# download (origin, dest_dir, dest_file[, label])
+download () {
+    echo ""
+    if [ $# -eq 4 ]
+    then
+	echo "Downloading $4..."
+    fi
+    wget -O "$2"/"$3" -P "$2" "$1"
+} # download
 
 echo "Local Install Script for Galaxy with UGA Web Service Extensions"
 echo ""
@@ -78,33 +89,30 @@ mkdir -p "$GAL"
 # The python executable
 PYTHON="$(which python2.7)"
 
-# Determine whether the system is 32 or 64 bit
+# Get the cpu model, 32 or 64 bit
 MODEL=$(uname -m)
 
 echo ""
 echo "Downloading the prerequisites..."
 
 # Download the python virtualenv script
-echo ""
-echo "Downloading the Virtual Python Environment builder"
-wget -P "$TMP" https://raw.github.com/pypa/virtualenv/master/virtualenv.py
+download "https://raw.github.com/pypa/virtualenv/master/virtualenv.py" $TMP "virtualenv.py" "Virtual Python Environment builder"
 
 # Download the appropriate jdk
-echo "Downloading the Java Development Kit"
 if [ "$MODEL" == "x86_64" ]
 then 
-    echo "64bit JDK"
-    wget -O "$TMP"/jdk.tar.gz -P "$TMP" http://download.oracle.com/otn-pub/java/jdk/7u3-b04/jdk-7u3-linux-x64.tar.gz
+    # 64 bit
+    download "http://download.oracle.com/otn-pub/java/jdk/7u3-b04/jdk-7u3-linux-x64.tar.gz" $TMP "jdk.tar.gz" "64 bit JDK"
 else
-    echo "32bit JDK"
-    wget -O "$TMP"/jdk.tar.gz -P "$TMP" http://download.oracle.com/otn-pub/java/jdk/7u3-b04/jdk-7u3-linux-i586.tar.gz
+    # 32 bit
+    download "http://download.oracle.com/otn-pub/java/jdk/7u3-b04/jdk-7u3-linux-i586.tar.gz" $TMP "jdk.tar.gz" "32 bit JDK"
 fi
 
-echo "Downloading JPype"
-wget -O "$TMP"/jpype.zip -P "$TMP" http://downloads.sourceforge.net/project/jpype/JPype/0.5.4/JPype-0.5.4.2.zip
+# Download JPype
+download "http://downloads.sourceforge.net/project/jpype/JPype/0.5.4/JPype-0.5.4.2.zip" $TMP "jpype.zip" "JPype"
 
-echo "Downloading Galaxy"
-wget -O "$TMP"/galaxy.tar.gz -P "$TMP" http://dist.g2.bx.psu.edu/galaxy-dist.tip.tar.gz
+# Download Galaxy
+download "http://dist.g2.bx.psu.edu/galaxy-dist.tip.tar.gz" $TMP "galaxy.tar.gz" "Galaxy" 
 
 # Go into the temp directory
 cd "$TMP"
