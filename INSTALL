@@ -35,5 +35,26 @@ Web Service Extensions for the Galaxy Workflow Editor
         ## Div where tool details are loaded and modified.
         <div id="right-content" class="right-content"></div>
 
+   c. Find:
+
+	var options = {};
+	$(this).find( "button" ).each( function() {
+
+      and replace with:
+
+	var options = {};
+
+	// WSEXTENSIONS
+	options[ "<small>[SSE]</small> Suggest values" ] = function() {
+	    $.wsextensions_suggest_values(id.substring(4));
+	};
+
+	// WSEXTENSIONS
+	options[ "<small>[SSE]</small> Documentation" ] = function() { 
+	    $.wsextensions_show_documentation(id.substring(4));
+	};
+
+        $(this).find( "button" ).each( function() {
+
    c. That's it!
 
