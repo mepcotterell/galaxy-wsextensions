@@ -1,13 +1,11 @@
 
 ## Web Service Extensions for the Galaxy Workflow Editor
 ## @author Michael Cotterell <mepcotterell@gmail.com>
-## @see    LICENSE (MIT style license file).
-## 
+##
 ## NOTE: This file is included in editor.mako via a mako include.
-##       Please see the INSTALL file for installation instructions.
 
 ## The product version
-WSEXTENSIONS_VERSIONS = "1.2";
+WSEXTENSIONS_VERSIONS = "1.3";
 
 ## The JSONP URI endpoint for the Suggestion Engine Web Service
 ## @author Michael Cotterell <mepcotterell@gmail.com>
@@ -37,7 +35,6 @@ function wsextensions_error(message) {
 }
 
 ## Show the log
-## @author Michael Cotterell <mepcotterell@gmail.com>
 function wsextensions_show_log() {
     var n = WSEXTENSIONS_LOG.length;
     var out = '<textarea rows="10" cols="160">';
@@ -48,14 +45,41 @@ function wsextensions_show_log() {
     show_modal( "Web Service Extensions Log", out, { "Close" : hide_modal } );
 }
 
+## Show the input documentation dialog
+function wsextensions_show_documentation(name) {
+    var msg = '<center>';
+    msg += '<p>Loading documentation...</p>';
+    msg += '<img src="/static/images/yui/rel_interstitial_loading.gif" />';
+    msg += '</center><p></p>';
+    msg += '<hr class="docutils">';
+    msg += '<p class="infomark">';
+    msg += '<strong>Note:</strong> Putting a note here looks cool.';
+    msg += '</p>';
+    show_modal( "Documentation for " + name, msg, { "Close" : hide_modal } );
+}
+$.wsextensions_show_documentation = wsextensions_show_documentation
+
+## Show the input value suggestion dialog
+function wsextensions_suggest_values(name) {
+    var msg = '<center>';
+    msg += '<p>Fetching suggestions...</p>';
+    msg += '<img src="/static/images/yui/rel_interstitial_loading.gif" />';
+    msg += '</center><p></p>';
+    msg += '<hr class="docutils">';
+    msg += '<p class="infomark">';
+    msg += '<strong>Note:</strong> Delays can occur when fetching suggestions from the server.';
+    msg += '</p>';
+    show_modal( "Suggest values for " + name, msg, { "Close" : hide_modal } );
+}
+$.wsextensions_suggest_values = wsextensions_suggest_values;
+
 ## Show the about dialog
-## @author Michael Cotterell <mepcotterell@gmail.com>
 function wsextensions_show_about() {
     var msg = "<strong>Product Version:</strong> wsextensions v" + WSEXTENSIONS_VERSIONS + "<br />";
     msg += "<br />";
     msg += 'Web Service Extensions for Galaxy are based on software from the'  + "<br />";
     msg += 'University of Georgia Web Services Annotations Group, which has' + "<br />";
-    msg += 'been licensed under a MIT style license.' + "<br />";
+    msg += 'been licensed under an MIT style license.' + "<br />";
     msg += "<br />";
     msg += 'For more information, please visit ' + "<br />";
     msg += '<a href="http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/">http://mango.ctegd.uga.edu/jkissingLab/SWS/Wsannotation/</a>.' + "<br />";
@@ -72,8 +96,7 @@ $.wsextensions_error    = wsextensions_error;
 $.wsextensions_show_log = wsextensions_show_log;
 
 ## Add the dropdown menu for WS Extensions
-## @author Michael Cotterell <mepcotterell@gmail.com>
-$("#workflow-options-button").replaceWith('<a id="workflow-suggestions-button" class="panel-header-button popup" href="#">Web Service Extensions</a> <a id="workflow-options-button" class="panel-header-button popup" href="#">Options</a>');
+$("#workflow-options-button").replaceWith('<a id="workflow-suggestions-button" class="panel-header-button popup" href="#">Service Suggestion Extensions</a> <a id="workflow-options-button" class="panel-header-button popup" href="#">Options</a>');
 
 ## Add the suggestion engine popup menu to the Galaxy worflow editor.
 ## @author Michael Cotterell <mepcotterell@gmail.com>
@@ -436,3 +459,4 @@ function wsextensions_se_parse_response(suggestions) {
     $("#suggestion-engine-results-content").replaceWith('<div id="suggestion-engine-results-content">' + out + '</div>');
 
 } // function wsextensions_se_parse_response
+
