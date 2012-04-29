@@ -4,7 +4,7 @@
             <div class="metadataFormTitle">Suggestion Engine</div>
             <div class="metadataFormBody">
                 <div class="form-row">
-                    
+		                       
                     ## Predecessor
                     <label>Previous Step:</label>
                     <ul id="suggestionEnginePredecessorListItems" style="display:none;"></ul>

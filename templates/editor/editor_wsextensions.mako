@@ -9,7 +9,7 @@ WSEXTENSIONS_VERSIONS = "1.3";
 
 ## The JSONP URI endpoint for the Suggestion Engine Web Service
 ## @author Michael Cotterell <mepcotterell@gmail.com>
-WSEXTENSIONS_SE_SERVICE_URI = "http://localhost:8084/SuggestionEngineWS/jsonp";
+WSEXTENSIONS_SE_SERVICE_URI = "http://localhost:8084/sse/services";
 
 ## A global array of messages that we can access from the JavaScript console.
 ## @author Michael Cotterell <mepcotterell@gmail.com>
@@ -46,32 +46,142 @@ function wsextensions_show_log() {
 }
 
 ## Show the input documentation dialog
-function wsextensions_show_documentation(name) {
-    var msg = '<center>';
-    msg += '<p>Loading documentation...</p>';
-    msg += '<img src="/static/images/yui/rel_interstitial_loading.gif" />';
-    msg += '</center><p></p>';
+function wsextensions_show_documentation(node, name) {
+    
+    ## This is the current node.        
+    ## var node = workflow.nodes[node_key];
+    var wsurl  = $('input[name="url"]', $(node.form_html)).attr('value');
+    var wsname = node.name.split(".")[0];
+    var wsop   = node.name.split(".")[1];
+    var param  = name;
+    
+    $.wsxDocNode  = node;
+    $.wsxDocWsdl  = wsurl;
+    $.wsxDocName  = wsname;
+    $.wsxDocOp    = wsop;
+    $.wsxDocParam = param;
+
+    wsextensions_log("Rendering the input documentation box");
+    wsextensions_log(wsurl);    
+
+    var request = WSEXTENSIONS_SE_SERVICE_URI
+    	+ "/documentationSuggestion/get/json"
+        + "?wsdl="            + encodeURI(wsurl)
+        + "&param="           + param 
+
+    ## make a JSON request
+    $.getJSON(request + "&callback=?", wsextensions_render_documentation);
+
+} // wsextensions_show_documentation
+$.wsextensions_show_documentation = wsextensions_show_documentation
+
+function wsextensions_render_documentation(response) {
+
+    //alert("here");
+
+    ## The number of lines returned.
+    var n = response.length;
+
+    ## If there were no suggestions returned then raise an error.
+    if (n == 0) {
+        wsextensions_error("Received a response from the Suggestion Engine Web Service, but it did not contain any results");
+        ## @TODO handle this more gracefully
+    } // if    
+    
+    ## prepare output list
+    var out = "<ul>";
+
+    ## loop over suggestions
+    for (var i = 0, len = n; i < len; ++i) {
+
+        ## Prepare the result for rendering
+        out += "<li>" + response[i] + "</li>";
+        
+    } // for
+
+    ## finish the output list
+    out += "</ul>";
+
+    var msg = '<p>';
+    msg += out;
+    msg += '</p>';
     msg += '<hr class="docutils">';
     msg += '<p class="infomark">';
     msg += '<strong>Note:</strong> Putting a note here looks cool.';
     msg += '</p>';
-    show_modal( "Documentation for " + name, msg, { "Close" : hide_modal } );
-}
-$.wsextensions_show_documentation = wsextensions_show_documentation
+    show_modal( "Documentation for " + $.wsxDocNode.name + " " + $.wsxDocParam, msg, { "Close" : hide_modal } );
 
-## Show the input value suggestion dialog
-function wsextensions_suggest_values(name) {
-    var msg = '<center>';
-    msg += '<p>Fetching suggestions...</p>';
-    msg += '<img src="/static/images/yui/rel_interstitial_loading.gif" />';
-    msg += '</center><p></p>';
+} // wsextensions_render_documentation
+$.wsextensions_render_documentation = wsextensions_render_documentation
+
+## Show the input documentation dialog
+function wsextensions_suggest_values(node, name) {
+    
+    ## This is the current node.        
+    ## var node = workflow.nodes[node_key];
+    var wsurl  = $('input[name="url"]', $(node.form_html)).attr('value');
+    var wsname = node.name.split(".")[0];
+    var wsop   = node.name.split(".")[1];
+    var param  = name;
+    
+    $.wsxDocNode  = node;
+    $.wsxDocWsdl  = wsurl;
+    $.wsxDocName  = wsname;
+    $.wsxDocOp    = wsop;
+    $.wsxDocParam = param;
+
+    wsextensions_log("Rendering the input documentation box");
+    wsextensions_log(wsurl);    
+
+    var request = WSEXTENSIONS_SE_SERVICE_URI
+    	+ "/parameterValueSuggestion/get/json"
+        + "?wsdl="            + encodeURI(wsurl)
+        + "&param="           + param 
+
+    ## make a JSON request
+    $.getJSON(request + "&callback=?", wsextensions_render_suggest_values);
+
+} // wsextensions_suggest_values
+$.wsextensions_suggest_values = wsextensions_suggest_values
+
+function wsextensions_render_suggest_values(response) {
+
+    //alert("here");
+
+    ## The number of lines returned.
+    var n = response.length;
+
+    ## If there were no suggestions returned then raise an error.
+    if (n == 0) {
+        wsextensions_error("Received a response from the Suggestion Engine Web Service, but it did not contain any results");
+        ## @TODO handle this more gracefully
+    } // if    
+    
+    ## prepare output list
+    var out = "<ul>";
+
+    ## loop over suggestions
+    for (var i = 0, len = n; i < len; ++i) {
+
+        ## Prepare the result for rendering
+        out += "<li>" + response[i] + "</li>";
+        
+    } // for
+
+    ## finish the output list
+    out += "</ul>";
+
+    var msg = '<p>';
+    msg += out;
+    msg += '</p>';
     msg += '<hr class="docutils">';
     msg += '<p class="infomark">';
-    msg += '<strong>Note:</strong> Delays can occur when fetching suggestions from the server.';
+    msg += '<strong>Note:</strong> Putting a note here looks cool.';
     msg += '</p>';
-    show_modal( "Suggest values for " + name, msg, { "Close" : hide_modal } );
-}
-$.wsextensions_suggest_values = wsextensions_suggest_values;
+    show_modal( "Suggest input for " + $.wsxDocNode.name + " " + $.wsxDocParam, msg, { "Close" : hide_modal } );
+
+} // wsextensions_render_suggest_values
+$.wsextensions_render_suggest_values = wsextensions_render_suggest_values
 
 ## Show the about dialog
 function wsextensions_show_about() {
@@ -340,16 +450,16 @@ function wsextensions_se_request() {
     wsextensions_log("Submitting the request to the Suggestion Engine Web Service via JSONP.");
 
     var request = WSEXTENSIONS_SE_SERVICE_URI
-        + "?operation="            + "getSuggestions"
-        + "&workflowOps="          + workflowOps 
-        + "&candidateOps="         + candidateOps
+        + "/serviceSuggestion/get/json"
+        + "?workflowPrevious="     + workflowOps 
+        + "&candidates="           + candidateOps
         + "&desired="              + desiredFunctionality 
         + "&typeChecking="         + typeChecking
         + "&contractCompliance="   + contractCompliance
         + "&typeSafety="           + typeSafety
 
     ## make a JSON request
-    $.getJSON(request + "&jsonp_callback=?", wsextensions_se_parse_response);
+    $.getJSON(request + "&callback=?", wsextensions_se_parse_response);
 
     ## don't really need this return but it's recommended for some reason
     return false;
@@ -459,4 +569,6 @@ function wsextensions_se_parse_response(suggestions) {
     $("#suggestion-engine-results-content").replaceWith('<div id="suggestion-engine-results-content">' + out + '</div>');
 
 } // function wsextensions_se_parse_response
+
+
 
