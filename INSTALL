@@ -37,24 +37,17 @@ Web Service Extensions for the Galaxy Workflow Editor
 
    c. Find:
 
-	var options = {};
-	$(this).find( "button" ).each( function() {
+	var b = $('<a class="popup-arrow" id="popup-arrow-for-' + id + '">&#9660;</a>');
+        var options = {};
 
       and replace with:
 
-	var options = {};
+	var b = $('<a class="popup-arrow" id="popup-arrow-for-' + id + '">&#9660;</a>');
+        var options = {};
 
-	// WSEXTENSIONS
-	options[ "<small>[SSE]</small> Suggest values" ] = function() {
-	    $.wsextensions_suggest_values(id.substring(4));
-	};
-
-	// WSEXTENSIONS
-	options[ "<small>[SSE]</small> Documentation" ] = function() { 
-	    $.wsextensions_show_documentation(id.substring(4));
-	};
-
-        $(this).find( "button" ).each( function() {
+	## Include the worflow editor Web Service extensions for input values.
+	## @author Michael Cotterell <mepcotterell@gmail.com>
+        <%include file="editor_wsextensions_param.mako"/>
 
    c. That's it!
 
